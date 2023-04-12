@@ -1,0 +1,2 @@
+﻿CREATE DATABASE UAI672_Database
+USE UAI672_Database

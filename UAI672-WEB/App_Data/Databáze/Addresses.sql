@@ -1,3 +1,9 @@
+USE UAI672_Database
+GO
+CREATE SCHEMA Persons
+GO
+DROP TABLE Persons.Addresses
+go
 create table Persons.Addresses
 (
     City   nchar(30),
