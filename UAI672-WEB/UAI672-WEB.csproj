@@ -145,8 +145,6 @@
     <Content Include="App_Data\Database1_log.ldf">
       <DependentUpon>Database1.mdf</DependentUpon>
     </Content>
-    <Content Include="App_Data\Databáze\Addresses.sql" />
-    <Content Include="App_Data\Databáze\Details.sql" />
     <Content Include="App_Data\Databáze\INIT.sql" />
     <Content Include="Content\bootstrap-grid.css" />
     <Content Include="Content\bootstrap-grid.min.css" />
