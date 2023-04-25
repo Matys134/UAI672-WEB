@@ -144,7 +144,9 @@
     <Compile Include="Repositories\IAddressesRepository.cs" />
     <Compile Include="Repositories\IDetailsRepository.cs" />
     <Compile Include="Services\AddressService.cs" />
+    <Compile Include="Services\DetailService.cs" />
     <Compile Include="Services\IAddressService.cs" />
+    <Compile Include="Services\IDetailService.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Databáze\INIT.sql" />

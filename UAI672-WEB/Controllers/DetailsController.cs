@@ -1,20 +1,29 @@
-﻿using System.Data.Entity;
-using System.Linq;
+﻿using System.Collections.Generic;
 using System.Net;
 using System.Web.Mvc;
 using UAI672_WEB.Models;
+using UAI672_WEB.Repositories;
+using UAI672_WEB.Services;
 
 namespace UAI672_WEB.Controllers
 {
     public class DetailsController : Controller
     {
-        private Model1 db = new Model1();
+        private readonly IDetailService _detailService;
+        private readonly IAddressService _addressService;
+
+        public DetailsController()
+        {
+            _detailService = new  DetailService(new DetailsRepository(new Model1()));
+            _addressService = new AddressService(new AddressRepository(new Model1()));
+        }
 
         // GET: Details
         public ActionResult Index()
         {
-            var details = db.Details.Include(d => d.Addresses);
-            return View(details.ToList());
+            var details = _detailService.GetAllDetails();
+            List<Addresses> addresses = _addressService.GetAllAddresses();
+            return View(details);
         }
 
         // GET: Details/Details/5
@@ -24,36 +33,35 @@ namespace UAI672_WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Details details = db.Details.Find(id);
+
+            var details = _detailService.GetDetailsById(id.Value);
             if (details == null)
             {
                 return HttpNotFound();
             }
+
             return View(details);
         }
 
         // GET: Details/Create
         public ActionResult Create()
         {
-            ViewBag.Address = new SelectList(db.Addresses, "id", "City");
+            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City");
             return View();
         }
 
         // POST: Details/Create
-        // Chcete-li zajistit ochranu před útoky typu OVERPOST, povolte konkrétní vlastnosti, k nimž 
-        // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Create([Bind(Include = "ID,Name,Surname,Address")] Details details)
         {
             if (ModelState.IsValid)
             {
-                db.Details.Add(details);
-                db.SaveChanges();
+                _detailService.AddDetails(details);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Address = new SelectList(db.Addresses, "id", "City", details.Address);
+            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City", details.Address);
             return View(details);
         }
 
@@ -64,29 +72,29 @@ namespace UAI672_WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Details details = db.Details.Find(id);
+
+            var details = _detailService.GetDetailsById(id.Value);
             if (details == null)
             {
                 return HttpNotFound();
             }
-            ViewBag.Address = new SelectList(db.Addresses, "id", "City", details.Address);
+
+            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City", details.Address);
             return View(details);
         }
 
         // POST: Details/Edit/5
-        // Chcete-li zajistit ochranu před útoky typu OVERPOST, povolte konkrétní vlastnosti, k nimž 
-        // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit([Bind(Include = "ID,Name,Surname,Address")] Details details)
         {
             if (ModelState.IsValid)
             {
-                db.Entry(details).State = EntityState.Modified;
-                db.SaveChanges();
+                _detailService.UpdateDetails(details);
                 return RedirectToAction("Index");
             }
-            ViewBag.Address = new SelectList(db.Addresses, "id", "City", details.Address);
+
+            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City", details.Address);
             return View(details);
         }
 
@@ -97,11 +105,13 @@ namespace UAI672_WEB.Controllers
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
-            Details details = db.Details.Find(id);
+
+            var details = _detailService.GetDetailsById(id.Value);
             if (details == null)
             {
                 return HttpNotFound();
             }
+
             return View(details);
         }
 
@@ -110,19 +120,8 @@ namespace UAI672_WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Details details = db.Details.Find(id);
-            db.Details.Remove(details);
-            db.SaveChanges();
+            _detailService.DeleteDetails(id);
             return RedirectToAction("Index");
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
         }
     }
 }

@@ -5,10 +5,10 @@ namespace UAI672_WEB.Repositories
 {
     public interface IDetailsRepository
     {
-        IEnumerable<Details> GetAllDetails();
-        Details GetDetailsById(int id);
-        void AddDetails(Details details);
-        void UpdateDetails(Details details);
-        void DeleteDetails(int id);
+        List<Details> GetAllDetails();
+        Details GetDetailById(int id);
+        void AddDetail(Details detail);
+        void UpdateDetail(Details detail);
+        void DeleteDetail(int id);
     }
 }

@@ -7,35 +7,40 @@ namespace UAI672_WEB.Repositories
 {
     public class DetailsRepository : IDetailsRepository
     {
-        private Model1 db = new Model1();
-
-        public IEnumerable<Details> GetAllDetails()
+        private readonly Model1 _db;
+        
+        public DetailsRepository(Model1 db)
         {
-            return db.Details.Include(d => d.Addresses).ToList();
+            _db = db;
         }
 
-        public Details GetDetailsById(int id)
+        public List<Details> GetAllDetails()
         {
-            return db.Details.Find(id);
+            return _db.Details.ToList();
         }
 
-        public void AddDetails(Details details)
+        public Details GetDetailById(int id)
         {
-            db.Details.Add(details);
-            db.SaveChanges();
+            return _db.Details.Find(id);
         }
 
-        public void UpdateDetails(Details details)
+        public void AddDetail(Details detail)
         {
-            db.Entry(details).State = EntityState.Modified;
-            db.SaveChanges();
+            _db.Details.Add(detail);
+            _db.SaveChanges();
         }
 
-        public void DeleteDetails(int id)
+        public void UpdateDetail(Details detail)
         {
-            Details details = db.Details.Find(id);
-            db.Details.Remove(details);
-            db.SaveChanges();
+            _db.Entry(detail).State = EntityState.Modified;
+            _db.SaveChanges();
+        }
+
+        public void DeleteDetail(int id)
+        {
+            var detail = _db.Details.Find(id);
+            _db.Details.Remove(detail);
+            _db.SaveChanges();
         }
     }
 }
