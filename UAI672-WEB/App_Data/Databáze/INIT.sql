@@ -16,7 +16,7 @@ GO
 IF EXISTS (SELECT * FROM sys.foreign_keys WHERE name = 'FK_Details_Addresses')
     BEGIN
         ALTER TABLE Persons.Details
-            DROP CONSTRAINT FK_Details_Addresses
+        DROP CONSTRAINT FK_Details_Addresses
     END
 
 -- Create the Addresses table in the Persons schema
