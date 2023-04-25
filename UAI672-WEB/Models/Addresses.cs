@@ -13,7 +13,7 @@ namespace UAI672_WEB.Models
             Details = new HashSet<Details>();
         }
 
-        public int id { get; set; }
+        public int Id { get; set; }
 
         [StringLength(255)]
         public string City { get; set; }
