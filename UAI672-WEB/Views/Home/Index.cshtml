@@ -30,4 +30,10 @@
             <p><a class="btn btn-outline-dark" href="https://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
         </section>
     </div>
+    <div>
+        @Html.ActionLink("List of Persons", "Index", "Details")
+        @Html.ActionLink("List of Addresses", "Index", "Addresses")
+        @Html.ActionLink("Add Person", "Create", "Details")
+        @Html.ActionLink("Add Address", "Create", "Addresses")
+    </div>
 </main>
