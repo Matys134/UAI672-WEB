@@ -38,7 +38,7 @@ namespace UAI672_WEB.Models
 
         public void DeleteAddress(int id)
         {
-            Addresses address = _db.Addresses.Find(id);
+            var address = _db.Addresses.Find(id);
             _db.Addresses.Remove(address);
             _db.SaveChanges();
         }

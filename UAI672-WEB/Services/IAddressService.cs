@@ -1,10 +1,8 @@
-using UAI672_WEB.Repositories;
+using System.Collections.Generic;
+using UAI672_WEB.Models;
 
 namespace UAI672_WEB.Services
 {
-    using System.Collections.Generic;
-    using UAI672_WEB.Models;
-
     public interface IAddressService
     {
         List<Addresses> GetAllAddresses();

@@ -14,11 +14,6 @@ namespace UAI672_WEB.Services
             _detailsRepository = detailsRepository;
         }
 
-        public IList<Details> GetAllDetails()
-        {
-            return _detailsRepository.GetAllDetails().ToList();
-        }
-
         IEnumerable<Details> IDetailService.GetAllDetails()
         {
             return GetAllDetails();
@@ -27,11 +22,6 @@ namespace UAI672_WEB.Services
         public Details GetDetailsById(int id)
         {
             return _detailsRepository.GetDetailById(id);
-        }
-
-        public void CreateDetails(Details details)
-        {
-            _detailsRepository.AddDetail(details);
         }
 
         public void AddDetails(Details details)
@@ -47,6 +37,16 @@ namespace UAI672_WEB.Services
         public void DeleteDetails(int id)
         {
             _detailsRepository.DeleteDetail(id);
+        }
+
+        public IList<Details> GetAllDetails()
+        {
+            return _detailsRepository.GetAllDetails().ToList();
+        }
+
+        public void CreateDetails(Details details)
+        {
+            _detailsRepository.AddDetail(details);
         }
     }
 }

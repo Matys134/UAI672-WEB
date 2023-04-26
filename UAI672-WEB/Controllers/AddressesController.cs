@@ -1,12 +1,10 @@
-﻿using UAI672_WEB.Repositories;
+﻿using System.Net;
+using System.Web.Mvc;
+using UAI672_WEB.Models;
+using UAI672_WEB.Services;
 
 namespace UAI672_WEB.Controllers
 {
-    using System.Net;
-    using System.Web.Mvc;
-    using UAI672_WEB.Models;
-    using UAI672_WEB.Services;
-
     public class AddressesController : Controller
     {
         private readonly IAddressService _addressService;
@@ -41,13 +39,13 @@ namespace UAI672_WEB.Controllers
 
             return View(addresses);
         }
-        
+
         // GET: Addresses/Create
         public ActionResult Create()
         {
             return View();
         }
-        
+
         // POST: Addresses/Create
         // Chcete-li zajistit ochranu před útoky typu OVERPOST, povolte konkrétní vlastnosti, k nimž
         // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -63,7 +61,7 @@ namespace UAI672_WEB.Controllers
 
             return View(addresses);
         }
-        
+
         // GET: Addresses/Edit/5
         public ActionResult Edit(int? id)
         {
@@ -76,7 +74,7 @@ namespace UAI672_WEB.Controllers
 
             return View(addresses);
         }
-        
+
         // POST: Addresses/Edit/5
         // Chcete-li zajistit ochranu před útoky typu OVERPOST, povolte konkrétní vlastnosti, k nimž
         // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
@@ -92,7 +90,7 @@ namespace UAI672_WEB.Controllers
 
             return View(addresses);
         }
-        
+
         // GET: Addresses/Delete/5
         public ActionResult Delete(int? id)
         {
@@ -105,9 +103,10 @@ namespace UAI672_WEB.Controllers
 
             return View(addresses);
         }
-        
+
         // POST: Addresses/Delete/5
-        [HttpPost, ActionName("Delete")]
+        [HttpPost]
+        [ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {

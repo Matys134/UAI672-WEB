@@ -8,7 +8,7 @@ namespace UAI672_WEB.Repositories
     public class DetailsRepository : IDetailsRepository
     {
         private readonly Model1 _db;
-        
+
         public DetailsRepository(Model1 db)
         {
             _db = db;

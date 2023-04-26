@@ -1,11 +1,8 @@
-using System.Data.Entity;
-using System.Linq;
+using System.Collections.Generic;
+using UAI672_WEB.Models;
 
 namespace UAI672_WEB.Repositories
 {
-    using System.Collections.Generic;
-    using UAI672_WEB.Models;
-
     public interface IAddressesRepository
     {
         List<Addresses> GetAllAddresses();

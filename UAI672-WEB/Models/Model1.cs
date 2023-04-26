@@ -2,7 +2,7 @@ using System.Data.Entity;
 
 namespace UAI672_WEB.Models
 {
-    public partial class Model1 : DbContext
+    public class Model1 : DbContext
     {
         public Model1()
             : base("name=Model1ConnectionString")
