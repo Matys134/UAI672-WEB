@@ -14,11 +14,11 @@ namespace UAI672_WEB.Services.Tests
     [TestClass()]
     public class DetailServiceTests
     {
-
         private Mock<IRepository<Details>> detailsRepository;
         private DetailService _detailService;
+
         [TestInitialize]
-        void Setup()
+        public void Setup()
         {
             detailsRepository = new Mock<IRepository<Details>>();
             _detailService = new DetailService(detailsRepository.Object);
@@ -80,5 +80,6 @@ namespace UAI672_WEB.Services.Tests
             detailsRepository.Verify(r => r.Delete(idToDelete), Times.Once);
         }
     }
+
 }
 

@@ -14,15 +14,22 @@ namespace UAI672_WEB.Repositories.Tests
     [TestClass()]
     public class DetailsRepositoryTests
     {
+        private Mock<Model1> dbMock;
+        private DetailsRepository detailsRepository;
+
+        [TestInitialize]
+        public void Setup()
+        {
+            // Inicializace mocku pro Model1
+            dbMock = new Mock<Model1>();
+
+            // Vytvoření instance DetailsRepository s použitím mocku pro Model1
+            detailsRepository = new DetailsRepository(dbMock.Object);
+        }
+
         [TestMethod()]
         public void DetailsRepositoryTest()
         {
-            // Arrange
-            var dbMock = new Mock<Model1>();
-
-            // Act
-            var detailsRepository = new DetailsRepository(dbMock.Object);
-
             // Assert
             Assert.IsNotNull(detailsRepository);
             Assert.AreEqual(dbMock.Object, detailsRepository.Get());
@@ -38,9 +45,7 @@ namespace UAI672_WEB.Repositories.Tests
                 new Details { ID = 2, Name = "Detail2", Surname = "Surname2" },
                 new Details { ID = 3, Name = "Detail3", Surname = "Surname3" }
             };
-            var dbMock = new Mock<Model1>();
             dbMock.Setup(db => db.Details.ToList()).Returns(details);
-            var detailsRepository = new DetailsRepository(dbMock.Object);
 
             // Act
             var result = detailsRepository.GetAll();
@@ -56,9 +61,7 @@ namespace UAI672_WEB.Repositories.Tests
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
-            var dbMock = new Mock<Model1>();
             dbMock.Setup(db => db.Details.Find(1)).Returns(detail);
-            var detailsRepository = new DetailsRepository(dbMock.Object);
 
             // Act
             var result = detailsRepository.GetById(1);
@@ -73,10 +76,8 @@ namespace UAI672_WEB.Repositories.Tests
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
-            var dbMock = new Mock<Model1>();
             var detailsSetMock = new Mock<DbSet<Details>>();
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
-            var detailsRepository = new DetailsRepository(dbMock.Object);
 
             // Act
             detailsRepository.Add(detail);
@@ -91,10 +92,8 @@ namespace UAI672_WEB.Repositories.Tests
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
-            var dbMock = new Mock<Model1>();
             var detailsSetMock = new Mock<DbSet<Details>>();
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
-            var detailsRepository = new DetailsRepository(dbMock.Object);
 
             // Act
             detailsRepository.Update(detail);
@@ -109,14 +108,12 @@ namespace UAI672_WEB.Repositories.Tests
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
-            var dbMock = new Mock<Model1>();
             var detailsSetMock = new Mock<DbSet<Details>>();
-            detailsSetMock.Setup(set => set.Find(detail.ID)).Returns(detail);
+            detailsSetMock.Setup(set => set.Remove(detail));
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
-            var detailsRepository = new DetailsRepository(dbMock.Object);
 
             // Act
-            detailsRepository.Delete(detail.ID);
+            detailsRepository.Delete(1);
 
             // Assert
             detailsSetMock.Verify(set => set.Remove(detail), Times.Once);

@@ -1,111 +1,113 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using UAI672_WEB.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
+using UAI672_WEB.Models;
+using UAI672_WEB.Repositories;
 
-namespace UAI672_WEB.Models.Tests
+namespace UAI672_WEB.Repositories.Tests
 {
-    [TestClass()]
+    [TestClass]
     public class AddressRepositoryTests
     {
-        private Mock<Model1> _db;
-        private AddressRepository _addressRepository;
+        private Mock<Model1> dbMock;
+        private AddressRepository addressRepository;
 
         [TestInitialize]
         public void Setup()
         {
-            _db = new Mock<Model1>(); 
-            _addressRepository = new AddressRepository(_db.Object);
-        }
-        [TestMethod()]
-        public void AddressRepositoryTest()
-        {
-            Assert.Fail();
+            // Vytvoření mocku pro DbContext
+            dbMock = new Mock<Model1>();
+
+            // Vytvoření instance AddressRepository s použitím mocku pro DbContext
+            addressRepository = new AddressRepository(dbMock.Object);
         }
 
-        [TestMethod()]
-        public void GetAllTest()
+        [TestMethod]
+        public void GetAllTestS()
         {
-            Assert.Fail();
+            // Arrange
+            var addresses = new List<Addresses>
+            {
+                new Addresses { Id = 1, Number = 3, City = "City1" },
+                new Addresses { Id = 2, Number = 6, City = "City2" },
+                new Addresses { Id = 3, Number = 9, City = "City3" }
+            }.AsQueryable();
+
+            var addressesSetMock = new Mock<DbSet<Addresses>>();
+            addressesSetMock.As<IQueryable<Addresses>>().Setup(m => m.Provider).Returns(addresses.Provider);
+            addressesSetMock.As<IQueryable<Addresses>>().Setup(m => m.Expression).Returns(addresses.Expression);
+            addressesSetMock.As<IQueryable<Addresses>>().Setup(m => m.ElementType).Returns(addresses.ElementType);
+            addressesSetMock.As<IQueryable<Addresses>>().Setup(m => m.GetEnumerator()).Returns(() => addresses.GetEnumerator());
+
+            dbMock.Setup(db => db.Addresses).Returns(addressesSetMock.Object);
+
+            // Act
+            var result = addressRepository.GetAll();
+
+            // Assert
+            Assert.AreEqual(3, result.Count());
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void GetByIdTest()
         {
             // Arrange
-            // Přidání testovacího adresy do databáze
-            var address = new Addresses { Id = 1, Number = 2, City = "Test City" };
-            _db.Object.Addresses.Add(address);
-            _db.Object.SaveChanges();
+            var address = new Addresses { Id = 1, Number = 25, City = "City1" };
+            dbMock.Setup(db => db.Addresses.Find(1)).Returns(address);
 
             // Act
-            var result = _addressRepository.GetById(1);
+            var result = addressRepository.GetById(1);
 
             // Assert
-            Assert.IsNotNull(result);
             Assert.AreEqual(1, result.Id);
-            Assert.AreEqual("Test Street", result.Number);
-            Assert.AreEqual("Test City", result.City);
+            Assert.AreEqual(25, result.Number);
+            Assert.AreEqual("City1", result.City);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void AddTest()
         {
             // Arrange
-            var address = new Addresses { Id = 1,  Number = 2, City = "Test City" };
+            Addresses address = new Addresses { Id = 1, Number = 25, City = "City1" };
 
             // Act
-            _addressRepository.Add(address);
+            addressRepository.Add(address);
 
             // Assert
-            var result = _db.Object.Addresses.Find(1);
-            Assert.IsNotNull(result);
-            Assert.AreEqual(1, result.Id);
-            Assert.AreEqual("Test Street", result.Number);
-            Assert.AreEqual("Test City", result.City);
+            dbMock.Verify(db => db.Addresses.Add(address), Times.Once);
+            dbMock.Verify(db => db.SaveChanges(), Times.Once);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void UpdateTest()
         {
             // Arrange
-            // Přidání testovacího adresy do databáze
-            var address = new Addresses { Id = 1, Number = 2, City = "Test City" };
-            _db.Object.Addresses.Add(address);
-            _db.Object.SaveChanges();
-
-            // Aktualizace adresy
-            address.Number = 2;
-            address.City = "Updated City";
+            var address = new Addresses { Id = 1, Number = 454, City = "City1" };
 
             // Act
-            _addressRepository.Update(address);
+            addressRepository.Update(address);
 
             // Assert
-            var result = _db.Object.Addresses.Find(1);
-            Assert.IsNotNull(result);
-            Assert.AreEqual("Updated Street", result.Number);
-            Assert.AreEqual("Updated City", result.City);
+            dbMock.Verify(db => db.Addresses.Remove(address), Times.Never);
+            dbMock.Verify(db => db.SaveChanges(), Times.Once);
+            dbMock.Verify(db => db.Entry(address).State.Equals( EntityState.Modified), Times.Once);
         }
 
-        [TestMethod()]
+        [TestMethod]
         public void DeleteTest()
         {
             // Arrange
-            // Přidání testovacího adresy do databáze
-            var address = new Addresses { Id = 1, Number = 2, City = "Test City" };
-            _db.Object.Addresses.Add(address);
-            _db.Object.SaveChanges();
+            var address = new Addresses { Id = 1, Number = 3, City = "City1" };
+            dbMock.Setup(db => db.Addresses.Find(1)).Returns(address);
+
             // Act
-            _addressRepository.Delete(1);
+            addressRepository.Delete(1);
 
             // Assert
-            var result = _db.Object.Addresses.Find(1);
-            Assert.IsNull(result);
+            dbMock.Verify(db => db.Addresses.Remove(address), Times.Once);
+            dbMock.Verify(db => db.SaveChanges(), Times.Once);
         }
     }
 }
