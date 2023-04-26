@@ -33,5 +33,7 @@ namespace UAI672_WEB.Repositories
             _db.Details.Remove(detail);
             _db.SaveChanges();
         }
+
+        public Model1 Get() => _db;
     }
 }
