@@ -7,9 +7,9 @@ namespace UAI672_WEB.Controllers
 {
     public class AddressesController : Controller
     {
-        private readonly IAddressService _addressService;
+        private readonly IService<Addresses> _addressService;
 
-        public AddressesController(IAddressService addressService)
+        public AddressesController(IService<Addresses> addressService)
         {
             _addressService = addressService;
         }
@@ -23,7 +23,7 @@ namespace UAI672_WEB.Controllers
         // GET: Addresses
         public ActionResult Index()
         {
-            var addresses = _addressService.GetAllAddresses();
+            var addresses = _addressService.GetAll();
             return View(addresses);
         }
 
@@ -33,7 +33,7 @@ namespace UAI672_WEB.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = _addressService.GetAddressById(id.Value);
+            var addresses = _addressService.GetById(id.Value);
             if (addresses == null)
                 return HttpNotFound();
 
@@ -55,7 +55,7 @@ namespace UAI672_WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                _addressService.AddAddress(addresses);
+                _addressService.Add(addresses);
                 return RedirectToAction("Index");
             }
 
@@ -68,7 +68,7 @@ namespace UAI672_WEB.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = _addressService.GetAddressById(id.Value);
+            var addresses = _addressService.GetById(id.Value);
             if (addresses == null)
                 return HttpNotFound();
 
@@ -84,7 +84,7 @@ namespace UAI672_WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                _addressService.UpdateAddress(addresses);
+                _addressService.Update(addresses);
                 return RedirectToAction("Index");
             }
 
@@ -97,7 +97,7 @@ namespace UAI672_WEB.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = _addressService.GetAddressById(id.Value);
+            var addresses = _addressService.GetById(id.Value);
             if (addresses == null)
                 return HttpNotFound();
 
@@ -110,7 +110,7 @@ namespace UAI672_WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _addressService.DeleteAddress(id);
+            _addressService.Delete(id);
             return RedirectToAction("Index");
         }
     }

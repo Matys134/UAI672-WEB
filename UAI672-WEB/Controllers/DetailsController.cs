@@ -8,8 +8,8 @@ namespace UAI672_WEB.Controllers
 {
     public class DetailsController : Controller
     {
-        private readonly IAddressService _addressService;
-        private readonly IDetailService _detailService;
+        private readonly IService<Addresses> _addressService;
+        private readonly IService<Details> _detailService;
 
         public DetailsController()
         {
@@ -20,8 +20,8 @@ namespace UAI672_WEB.Controllers
         // GET: Details
         public ActionResult Index()
         {
-            var details = _detailService.GetAllDetails();
-            var addresses = _addressService.GetAllAddresses();
+            var details = _detailService.GetAll();
+            var addresses = _addressService.GetAll();
             return View(details);
         }
 
@@ -30,7 +30,7 @@ namespace UAI672_WEB.Controllers
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = _detailService.GetDetailsById(id.Value);
+            var details = _detailService.GetById(id.Value);
             if (details == null) return HttpNotFound();
 
             return View(details);
@@ -39,7 +39,7 @@ namespace UAI672_WEB.Controllers
         // GET: Details/Create
         public ActionResult Create()
         {
-            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City");
+            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City");
             return View();
         }
 
@@ -50,11 +50,11 @@ namespace UAI672_WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                _detailService.AddDetails(details);
+                _detailService.Add(details);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City", details.Address);
+            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City", details.Address);
             return View(details);
         }
 
@@ -63,10 +63,10 @@ namespace UAI672_WEB.Controllers
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = _detailService.GetDetailsById(id.Value);
+            var details = _detailService.GetById(id.Value);
             if (details == null) return HttpNotFound();
 
-            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City", details.Address);
+            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City", details.Address);
             return View(details);
         }
 
@@ -77,11 +77,11 @@ namespace UAI672_WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                _detailService.UpdateDetails(details);
+                _detailService.Update(details);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Address = new SelectList(_addressService.GetAllAddresses(), "id", "City", details.Address);
+            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City", details.Address);
             return View(details);
         }
 
@@ -90,7 +90,7 @@ namespace UAI672_WEB.Controllers
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = _detailService.GetDetailsById(id.Value);
+            var details = _detailService.GetById(id.Value);
             if (details == null) return HttpNotFound();
 
             return View(details);
@@ -102,7 +102,7 @@ namespace UAI672_WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _detailService.DeleteDetails(id);
+            _detailService.Delete(id);
             return RedirectToAction("Index");
         }
     }

@@ -5,7 +5,7 @@ using UAI672_WEB.Repositories;
 
 namespace UAI672_WEB.Services
 {
-    public class DetailService : IDetailService
+    public class DetailService : IService<Details>
     {
         private readonly IDetailsRepository _detailsRepository;
 
@@ -14,37 +14,37 @@ namespace UAI672_WEB.Services
             _detailsRepository = detailsRepository;
         }
 
-        IEnumerable<Details> IDetailService.GetAllDetails()
+        IEnumerable<Details> IService<Details>.GetAll()
         {
-            return GetAllDetails();
+            return GetAll();
         }
 
-        public Details GetDetailsById(int id)
+        public Details GetById(int id)
         {
             return _detailsRepository.GetDetailById(id);
         }
 
-        public void AddDetails(Details details)
+        public void Add(Details details)
         {
             _detailsRepository.AddDetail(details);
         }
 
-        public void UpdateDetails(Details details)
+        public void Update(Details details)
         {
             _detailsRepository.UpdateDetail(details);
         }
 
-        public void DeleteDetails(int id)
+        public void Delete(int id)
         {
             _detailsRepository.DeleteDetail(id);
         }
 
-        public IList<Details> GetAllDetails()
+        public IList<Details> GetAll()
         {
             return _detailsRepository.GetAllDetails().ToList();
         }
 
-        public void CreateDetails(Details details)
+        public void Create(Details details)
         {
             _detailsRepository.AddDetail(details);
         }
