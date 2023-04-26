@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using UAI672_WEB.Models;
@@ -21,6 +22,6 @@ namespace UAI672_WEB.Services
 
         public void Delete(int id) => _detailsRepository.Delete(id);
 
-        public void Create(Details details) => _detailsRepository.Add(details);
+        public IRepository<Details> Get() => _detailsRepository;
     }
 }

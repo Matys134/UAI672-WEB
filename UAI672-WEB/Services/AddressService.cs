@@ -19,5 +19,7 @@ namespace UAI672_WEB.Services
         public void Update(Addresses address) => _addressRepository.Update(address);
 
         public void Delete(int id) => _addressRepository.Delete(id);
+
+        public IRepository<Addresses> Get() => _addressRepository;
     }
 }
