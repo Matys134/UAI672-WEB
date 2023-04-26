@@ -7,46 +7,20 @@ namespace UAI672_WEB.Services
 {
     public class DetailService : IService<Details>
     {
-        private readonly IDetailsRepository _detailsRepository;
+        private readonly IRepository<Details> _detailsRepository;
 
-        public DetailService(IDetailsRepository detailsRepository)
-        {
-            _detailsRepository = detailsRepository;
-        }
+        public DetailService(IRepository<Details> detailsRepository) => _detailsRepository = detailsRepository;
 
-        IEnumerable<Details> IService<Details>.GetAll()
-        {
-            return GetAll();
-        }
+        IEnumerable<Details> IService<Details>.GetAll() => _detailsRepository.GetAll();
 
-        public Details GetById(int id)
-        {
-            return _detailsRepository.GetDetailById(id);
-        }
+        public Details GetById(int id) => _detailsRepository.GetById(id);
 
-        public void Add(Details details)
-        {
-            _detailsRepository.AddDetail(details);
-        }
+        public void Add(Details details) => _detailsRepository.Add(details);
 
-        public void Update(Details details)
-        {
-            _detailsRepository.UpdateDetail(details);
-        }
+        public void Update(Details details) => _detailsRepository.Update(details);
 
-        public void Delete(int id)
-        {
-            _detailsRepository.DeleteDetail(id);
-        }
+        public void Delete(int id) => _detailsRepository.Delete(id);
 
-        public IList<Details> GetAll()
-        {
-            return _detailsRepository.GetAllDetails().ToList();
-        }
-
-        public void Create(Details details)
-        {
-            _detailsRepository.AddDetail(details);
-        }
+        public void Create(Details details) => _detailsRepository.Add(details);
     }
 }

@@ -5,38 +5,29 @@ using UAI672_WEB.Models;
 
 namespace UAI672_WEB.Repositories
 {
-    public class DetailsRepository : IDetailsRepository
+    public class DetailsRepository : IRepository<Details>
     {
         private readonly Model1 _db;
 
-        public DetailsRepository(Model1 db)
-        {
-            _db = db;
-        }
+        public DetailsRepository(Model1 db) => _db = db;
 
-        public List<Details> GetAllDetails()
-        {
-            return _db.Details.ToList();
-        }
+        public IEnumerable<Details> GetAll() => _db.Details.ToList();
 
-        public Details GetDetailById(int id)
-        {
-            return _db.Details.Find(id);
-        }
+        public Details GetById(int id) => _db.Details.Find(id);
 
-        public void AddDetail(Details detail)
+        public void Add(Details ob)
         {
-            _db.Details.Add(detail);
+            _db.Details.Add(ob);
             _db.SaveChanges();
         }
 
-        public void UpdateDetail(Details detail)
+        public void Update(Details ob)
         {
-            _db.Entry(detail).State = EntityState.Modified;
+            _db.Entry(ob).State = EntityState.Modified;
             _db.SaveChanges();
         }
 
-        public void DeleteDetail(int id)
+        public void Delete(int id)
         {
             var detail = _db.Details.Find(id);
             _db.Details.Remove(detail);

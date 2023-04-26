@@ -154,8 +154,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Repositories\AddressesRepository.cs" />
     <Compile Include="Repositories\DetailsRepository.cs" />
-    <Compile Include="Repositories\IAddressesRepository.cs" />
-    <Compile Include="Repositories\IDetailsRepository.cs" />
+    <Compile Include="Repositories\IRepository.cs" />
     <Compile Include="Services\AddressService.cs" />
     <Compile Include="Services\DetailService.cs" />
     <Compile Include="Services\IService.cs" />
