@@ -10,11 +10,11 @@ namespace UAI672_WEB.Services
 {
     public interface IService<T>
     {
-        IEnumerable<T> GetAll();
-        T GetById(int id);
-        void Add(T details);
-        void Update(T details);
-        void Delete(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task<T> GetByIdAsync(int id);
+        Task AddAsync(T details);
+        Task UpdateAsync(T details);
+        Task DeleteAsync(int id);
         IRepository<T> Get();
     }
 }

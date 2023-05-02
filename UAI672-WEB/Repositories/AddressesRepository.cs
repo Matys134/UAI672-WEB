@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using UAI672_WEB.Repositories;
 
 namespace UAI672_WEB.Models
@@ -11,27 +12,27 @@ namespace UAI672_WEB.Models
 
         public AddressRepository(Model1 db) => _db = db;
 
-        public IEnumerable<Addresses> GetAll() => _db.Addresses.ToList();
+        public async Task<IEnumerable<Addresses>> GetAllAsync() => await _db.Addresses.ToListAsync();
 
-        public Addresses GetById(int id) => _db.Addresses.Find(id);
+        public async Task<Addresses> GetByIdAsync(int id) => await _db.Addresses.FindAsync(id);
 
-        public void Add(Addresses address)
+        public async Task AddAsync(Addresses address)
         {
             _db.Addresses.Add(address);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        public void Update(Addresses address)
+        public async Task UpdateAsync(Addresses address)
         {
             _db.Entry(address).State = EntityState.Modified;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var address = _db.Addresses.Find(id);
+            var address = await _db.Addresses.FindAsync(id);
             _db.Addresses.Remove(address);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
     }
 }

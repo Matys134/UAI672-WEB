@@ -43,7 +43,7 @@ namespace UAI672_WEB.Services.Tests
         {
             // Arrange
             var address = new Addresses { Id = 1, Number = 20, City = "City1" };
-            _addressRepositoryMock.Setup(repo => repo.GetById(1)).Returns(address);
+            _addressRepositoryMock.Setup(repo => repo.GetByIdAsync(1)).Returns(address);
 
             // Act
             var result = _addressService.GetById(1);
@@ -65,7 +65,7 @@ namespace UAI672_WEB.Services.Tests
             _addressService.Add(address);
 
             // Assert
-            _addressRepositoryMock.Verify(repo => repo.Add(address), Times.Once());
+            _addressRepositoryMock.Verify(repo => repo.AddAsync(address), Times.Once());
         }
 
         [TestMethod()]
@@ -78,7 +78,7 @@ namespace UAI672_WEB.Services.Tests
             _addressService.Update(address);
 
             // Assert
-            _addressRepositoryMock.Verify(repo => repo.Update(address), Times.Once());
+            _addressRepositoryMock.Verify(repo => repo.UpdateAsync(address), Times.Once());
         }
 
         [TestMethod()]
@@ -91,7 +91,7 @@ namespace UAI672_WEB.Services.Tests
             _addressService.Delete(id);
 
             // Assert
-            _addressRepositoryMock.Verify(repo => repo.Delete(id), Times.Once());
+            _addressRepositoryMock.Verify(repo => repo.DeleteAsync(id), Times.Once());
 
         }
        

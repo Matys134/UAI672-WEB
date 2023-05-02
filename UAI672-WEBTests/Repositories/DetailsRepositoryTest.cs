@@ -48,7 +48,7 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details.ToList()).Returns(details);
 
             // Act
-            var result = detailsRepository.GetAll();
+            var result = detailsRepository.GetAllAsync();
 
             // Assert
             Assert.IsNotNull(result);
@@ -64,7 +64,7 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details.Find(1)).Returns(detail);
 
             // Act
-            var result = detailsRepository.GetById(1);
+            var result = detailsRepository.GetByIdAsync(1);
 
             // Assert
             Assert.IsNotNull(result);
@@ -80,7 +80,7 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
 
             // Act
-            detailsRepository.Add(detail);
+            detailsRepository.AddAsync(detail);
 
             // Assert
             detailsSetMock.Verify(set => set.Add(detail), Times.Once);
@@ -96,7 +96,7 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
 
             // Act
-            detailsRepository.Update(detail);
+            detailsRepository.UpdateAsync(detail);
 
             // Assert
             detailsSetMock.Verify(set => set.Attach(detail), Times.Once);
@@ -113,7 +113,7 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
 
             // Act
-            detailsRepository.Delete(1);
+            detailsRepository.DeleteAsync(1);
 
             // Assert
             detailsSetMock.Verify(set => set.Remove(detail), Times.Once);

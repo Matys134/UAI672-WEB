@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using UAI672_WEB.Models;
 using UAI672_WEB.Services;
@@ -21,19 +22,19 @@ namespace UAI672_WEB.Controllers
         }
 
         // GET: Addresses
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var addresses = _addressService.GetAll();
+            var addresses = await _addressService.GetAllAsync();
             return View(addresses);
         }
 
         // GET: Addresses/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = _addressService.GetById(id.Value);
+            var addresses = await _addressService.GetByIdAsync(id.Value);
             if (addresses == null)
                 return HttpNotFound();
 
@@ -55,7 +56,7 @@ namespace UAI672_WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                _addressService.Add(addresses);
+                _addressService.AddAsync(addresses);
                 return RedirectToAction("Index");
             }
 
@@ -63,12 +64,12 @@ namespace UAI672_WEB.Controllers
         }
 
         // GET: Addresses/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = _addressService.GetById(id.Value);
+            var addresses = await _addressService.GetByIdAsync(id.Value);
             if (addresses == null)
                 return HttpNotFound();
 
@@ -84,7 +85,7 @@ namespace UAI672_WEB.Controllers
         {
             if (ModelState.IsValid)
             {
-                _addressService.Update(addresses);
+                _addressService.UpdateAsync(addresses);
                 return RedirectToAction("Index");
             }
 
@@ -92,12 +93,12 @@ namespace UAI672_WEB.Controllers
         }
 
         // GET: Addresses/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = _addressService.GetById(id.Value);
+            var addresses = await _addressService.GetByIdAsync(id.Value);
             if (addresses == null)
                 return HttpNotFound();
 
@@ -110,7 +111,7 @@ namespace UAI672_WEB.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            _addressService.Delete(id);
+            _addressService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
     }

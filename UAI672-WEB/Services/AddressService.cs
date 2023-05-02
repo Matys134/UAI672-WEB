@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UAI672_WEB.Models;
 using UAI672_WEB.Repositories;
 
@@ -8,18 +9,39 @@ namespace UAI672_WEB.Services
     {
         private readonly IRepository<Addresses> _addressRepository;
 
-        public AddressService(IRepository<Addresses> addressRepository) => _addressRepository = addressRepository;
+        public AddressService(IRepository<Addresses> addressRepository)
+        {
+            _addressRepository = addressRepository;
+        }
 
-        IEnumerable<Addresses> IService<Addresses>.GetAll() => _addressRepository.GetAll();
+        public async Task<IEnumerable<Addresses>> GetAllAsync()
+        {
+            return await _addressRepository.GetAllAsync();
+        }
 
-        public Addresses GetById(int id) => _addressRepository.GetById(id);
+        public async Task<Addresses> GetByIdAsync(int id)
+        {
+            return await _addressRepository.GetByIdAsync(id);
+        }
 
-        public void Add(Addresses address) => _addressRepository.Add(address);
+        public async Task AddAsync(Addresses address)
+        {
+            await _addressRepository.AddAsync(address);
+        }
 
-        public void Update(Addresses address) => _addressRepository.Update(address);
+        public async Task UpdateAsync(Addresses address)
+        {
+            await _addressRepository.UpdateAsync(address);
+        }
 
-        public void Delete(int id) => _addressRepository.Delete(id);
+        public async Task DeleteAsync(int id)
+        {
+            await _addressRepository.DeleteAsync(id);
+        }
 
-        public IRepository<Addresses> Get() => _addressRepository;
+        public IRepository<Addresses> Get()
+        {
+            return _addressRepository;
+        }
     }
 }

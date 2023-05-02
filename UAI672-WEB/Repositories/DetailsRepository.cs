@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using UAI672_WEB.Models;
 
 namespace UAI672_WEB.Repositories
@@ -11,27 +12,27 @@ namespace UAI672_WEB.Repositories
 
         public DetailsRepository(Model1 db) => _db = db;
 
-        public IEnumerable<Details> GetAll() => _db.Details.ToList();
+        public async Task<IEnumerable<Details>> GetAllAsync() => await _db.Details.ToListAsync();
 
-        public Details GetById(int id) => _db.Details.Find(id);
+        public async Task<Details> GetByIdAsync(int id) => await _db.Details.FindAsync(id);
 
-        public void Add(Details ob)
+        public async Task AddAsync(Details ob)
         {
             _db.Details.Add(ob);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        public void Update(Details ob)
+        public async Task UpdateAsync(Details ob)
         {
             _db.Entry(ob).State = EntityState.Modified;
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
-        public void Delete(int id)
+        public async Task DeleteAsync(int id)
         {
-            var detail = _db.Details.Find(id);
+            var detail = await _db.Details.FindAsync(id);
             _db.Details.Remove(detail);
-            _db.SaveChanges();
+            await _db.SaveChangesAsync();
         }
 
         public Model1 Get() => _db;

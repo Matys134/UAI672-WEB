@@ -29,7 +29,7 @@ namespace UAI672_WEB.Services.Tests
         {
             // Arrange
             var expectedDetail = new Details { ID = 1, Name = "Detail1" };
-            detailsRepository.Setup(r => r.GetById(1)).Returns(expectedDetail);
+            detailsRepository.Setup(r => r.GetByIdAsync(1)).Returns(expectedDetail);
 
             // Act
             var actualDetail = _detailService.GetById(1);
@@ -48,8 +48,8 @@ namespace UAI672_WEB.Services.Tests
             _detailService.Add(newDetail);
 
             // Assert
-            detailsRepository.Verify(r => r.Add(It.IsAny<Details>()), Times.Once);
-            detailsRepository.Verify(r => r.Add(newDetail), Times.Once);
+            detailsRepository.Verify(r => r.AddAsync(It.IsAny<Details>()), Times.Once);
+            detailsRepository.Verify(r => r.AddAsync(newDetail), Times.Once);
         }
 
         [TestMethod()]
@@ -62,8 +62,8 @@ namespace UAI672_WEB.Services.Tests
             _detailService.Update(existingDetail);
 
             // Assert
-            detailsRepository.Verify(r => r.Update(It.IsAny<Details>()), Times.Once);
-            detailsRepository.Verify(r => r.Update(existingDetail), Times.Once);
+            detailsRepository.Verify(r => r.UpdateAsync(It.IsAny<Details>()), Times.Once);
+            detailsRepository.Verify(r => r.UpdateAsync(existingDetail), Times.Once);
         }
 
         [TestMethod()]
@@ -76,8 +76,8 @@ namespace UAI672_WEB.Services.Tests
             _detailService.Delete(idToDelete);
 
             // Assert
-            detailsRepository.Verify(r => r.Delete(It.IsAny<int>()), Times.Once);
-            detailsRepository.Verify(r => r.Delete(idToDelete), Times.Once);
+            detailsRepository.Verify(r => r.DeleteAsync(It.IsAny<int>()), Times.Once);
+            detailsRepository.Verify(r => r.DeleteAsync(idToDelete), Times.Once);
         }
     }
 

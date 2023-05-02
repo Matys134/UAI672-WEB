@@ -1,4 +1,5 @@
 ﻿using System.Net;
+using System.Threading.Tasks;
 using System.Web.Mvc;
 using UAI672_WEB.Models;
 using UAI672_WEB.Repositories;
@@ -18,79 +19,79 @@ namespace UAI672_WEB.Controllers
         }
 
         // GET: Details
-        public ActionResult Index()
+        public async Task<ActionResult> Index()
         {
-            var details = _detailService.GetAll();
-            var addresses = _addressService.GetAll();
+            var details = await _detailService.GetAllAsync();
+            var addresses = await _addressService.GetAllAsync();
             return View(details);
         }
 
         // GET: Details/Details/5
-        public ActionResult Details(int? id)
+        public async Task<ActionResult> Details(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = _detailService.GetById(id.Value);
+            var details = await _detailService.GetByIdAsync(id.Value);
             if (details == null) return HttpNotFound();
 
             return View(details);
         }
 
         // GET: Details/Create
-        public ActionResult Create()
+        public async Task<ActionResult> Create()
         {
-            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City");
+            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City");
             return View();
         }
 
         // POST: Details/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "ID,Name,Surname,Address")] Details details)
+        public async Task<ActionResult> Create([Bind(Include = "ID,Name,Surname,Address")] Details details)
         {
             if (ModelState.IsValid)
             {
-                _detailService.Add(details);
+                await _detailService.AddAsync(details);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City", details.Address);
+            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", details.Address);
             return View(details);
         }
 
         // GET: Details/Edit/5
-        public ActionResult Edit(int? id)
+        public async Task<ActionResult> Edit(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = _detailService.GetById(id.Value);
+            var details = await _detailService.GetByIdAsync(id.Value);
             if (details == null) return HttpNotFound();
 
-            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City", details.Address);
+            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", details.Address);
             return View(details);
         }
 
         // POST: Details/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "ID,Name,Surname,Address")] Details details)
+        public async Task<ActionResult> Edit([Bind(Include = "ID,Name,Surname,Address")] Details details)
         {
             if (ModelState.IsValid)
             {
-                _detailService.Update(details);
+                await _detailService.UpdateAsync(details);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Address = new SelectList(_addressService.GetAll(), "id", "City", details.Address);
+            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", details.Address);
             return View(details);
         }
 
         // GET: Details/Delete/5
-        public ActionResult Delete(int? id)
+        public async Task<ActionResult> Delete(int? id)
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = _detailService.GetById(id.Value);
+            var details = await _detailService.GetByIdAsync(id.Value);
             if (details == null) return HttpNotFound();
 
             return View(details);
@@ -100,9 +101,9 @@ namespace UAI672_WEB.Controllers
         [HttpPost]
         [ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
+        public async Task<ActionResult> DeleteConfirmed(int id)
         {
-            _detailService.Delete(id);
+            await _detailService.DeleteAsync(id);
             return RedirectToAction("Index");
         }
     }

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using UAI672_WEB.Models;
 using UAI672_WEB.Repositories;
 
@@ -12,15 +13,15 @@ namespace UAI672_WEB.Services
 
         public DetailService(IRepository<Details> detailsRepository) => _detailsRepository = detailsRepository;
 
-        IEnumerable<Details> IService<Details>.GetAll() => _detailsRepository.GetAll();
+        public async Task<IEnumerable<Details>> GetAllAsync() => await _detailsRepository.GetAllAsync();
 
-        public Details GetById(int id) => _detailsRepository.GetById(id);
+        public async Task<Details> GetByIdAsync(int id) => await _detailsRepository.GetByIdAsync(id);
 
-        public void Add(Details details) => _detailsRepository.Add(details);
+        public async Task AddAsync(Details details) => await _detailsRepository.AddAsync(details);
 
-        public void Update(Details details) => _detailsRepository.Update(details);
+        public async Task UpdateAsync(Details details) => await _detailsRepository.UpdateAsync(details);
 
-        public void Delete(int id) => _detailsRepository.Delete(id);
+        public async Task DeleteAsync(int id) => await _detailsRepository.DeleteAsync(id);
 
         public IRepository<Details> Get() => _detailsRepository;
     }
