@@ -161,8 +161,8 @@
     <Compile Include="Services\AddressService.cs" />
     <Compile Include="Services\DetailService.cs" />
     <Compile Include="Services\IService.cs" />
-    <Compile Include="Views\AddressesV\AddressesModelView.cs" />
-    <Compile Include="Views\DetailsV\DetailsModelView.cs" />
+    <Compile Include="Views\Addresses\AddressesModelView.cs" />
+    <Compile Include="Views\Details\DetailsModelView.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Databáze\INIT.sql" />
@@ -217,16 +217,16 @@
     <Content Include="Views\Home\About.cshtml" />
     <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\AddressesV\Create.cshtml" />
-    <Content Include="Views\AddressesV\Delete.cshtml" />
-    <Content Include="Views\AddressesV\Details.cshtml" />
-    <Content Include="Views\AddressesV\Edit.cshtml" />
-    <Content Include="Views\AddressesV\Index.cshtml" />
-    <Content Include="Views\DetailsV\Create.cshtml" />
-    <Content Include="Views\DetailsV\Delete.cshtml" />
-    <Content Include="Views\DetailsV\Details.cshtml" />
-    <Content Include="Views\DetailsV\Edit.cshtml" />
-    <Content Include="Views\DetailsV\Index.cshtml" />
+    <Content Include="Views\Addresses\Create.cshtml" />
+    <Content Include="Views\Addresses\Delete.cshtml" />
+    <Content Include="Views\Addresses\Details.cshtml" />
+    <Content Include="Views\Addresses\Edit.cshtml" />
+    <Content Include="Views\Addresses\Index.cshtml" />
+    <Content Include="Views\Details\Create.cshtml" />
+    <Content Include="Views\Details\Delete.cshtml" />
+    <Content Include="Views\Details\Details.cshtml" />
+    <Content Include="Views\Details\Edit.cshtml" />
+    <Content Include="Views\Details\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\bootstrap.rtl.min.css.map" />
