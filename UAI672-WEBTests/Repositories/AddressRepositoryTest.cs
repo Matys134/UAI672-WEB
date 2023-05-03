@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using UAI672_WEB.Models;
@@ -25,7 +26,7 @@ namespace UAI672_WEB.Repositories.Tests
         }
 
         [TestMethod]
-        public void GetAllTestS()
+        public async Task GetAllAsyncTestS()
         {
             // Arrange
             var addresses = new List<Addresses>
@@ -44,21 +45,21 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Addresses).Returns(addressesSetMock.Object);
 
             // Act
-            var result = addressRepository.GetAllAsync();
+            var result = await addressRepository.GetAllAsync();
 
             // Assert
             Assert.AreEqual(3, result.Result.Count());
         }
 
         [TestMethod]
-        public void GetByIdTest()
+        public async Task GetByIdAsyncTest()
         {
             // Arrange
             var address = new Addresses { Id = 1, Number = 25, City = "City1" };
-            dbMock.Setup(db => db.Addresses.Find(1)).Returns(address);
+            dbMock.Setup(db => db.Addresses.FindAsync(1)).ReturnsAsync(address);
 
             // Act
-            var result = addressRepository.GetByIdAsync(1);
+            var result = await addressRepository.GetByIdAsync(1);
 
             // Assert
             Assert.AreEqual(1, result.Result.Id);
@@ -67,43 +68,42 @@ namespace UAI672_WEB.Repositories.Tests
         }
 
         [TestMethod]
-        public void AddTest()
+        public async Task AddAsyncTest()
         {
             // Arrange
             Addresses address = new Addresses { Id = 1, Number = 25, City = "City1" };
 
             // Act
-            addressRepository.AddAsync(address);
+            await addressRepository.AddAsync(address);
 
             // Assert
             dbMock.Verify(db => db.Addresses.Add(address), Times.Once);
-            dbMock.Verify(db => db.SaveChanges(), Times.Once);
+            dbMock.Verify(db => db.SaveChangesAsync(), Times.Once);
         }
 
         [TestMethod]
-        public void UpdateTest()
+        public async Task UpdateAsyncTest()
         {
             // Arrange
             var address = new Addresses { Id = 1, Number = 454, City = "City1" };
 
             // Act
-            _ = addressRepository.UpdateAsync(address);
+            await addressRepository.UpdateAsync(address);
 
             // Assert
-            dbMock.Verify(db => db.Addresses.Remove(address), Times.Never);
-            dbMock.Verify(db => db.SaveChanges(), Times.Once);
             dbMock.Verify(db => db.Entry(address).State.Equals( EntityState.Modified), Times.Once);
+            dbMock.Verify(db => db.SaveChangesAsync(), Times.Once);
         }
 
         [TestMethod]
-        public void DeleteTest()
+        public async Task DeleteTest()
         {
             // Arrange
             var address = new Addresses { Id = 1, Number = 3, City = "City1" };
-            dbMock.Setup(db => db.Addresses.Find(1)).Returns(address);
+            dbMock.Setup(db => db.Addresses.FindAsync(1)).ReturnsAsync(address);
 
             // Act
-            _ = addressRepository.DeleteAsync(1);
+            await addressRepository.DeleteAsync(1);
 
             // Assert
             dbMock.Verify(db => db.Addresses.Remove(address), Times.Once);

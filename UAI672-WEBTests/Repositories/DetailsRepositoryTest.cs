@@ -20,10 +20,10 @@ namespace UAI672_WEB.Repositories.Tests
         [TestInitialize]
         public void Setup()
         {
-            // Inicializace mocku pro Model1
+            // Initialize the Model1 mock
             dbMock = new Mock<Model1>();
 
-            // Vytvoření instance DetailsRepository s použitím mocku pro Model1
+            // Create an instance of DetailsRepository using the Model1 mock
             detailsRepository = new DetailsRepository(dbMock.Object);
         }
 
@@ -36,7 +36,7 @@ namespace UAI672_WEB.Repositories.Tests
         }
 
         [TestMethod()]
-        public void GetAllTest()
+        public async Task GetAllTestAsync()
         {
             // Arrange
             var details = new List<Details>
@@ -45,10 +45,10 @@ namespace UAI672_WEB.Repositories.Tests
                 new Details { ID = 2, Name = "Detail2", Surname = "Surname2" },
                 new Details { ID = 3, Name = "Detail3", Surname = "Surname3" }
             };
-            dbMock.Setup(db => db.Details.ToList()).Returns(details);
+            dbMock.Setup(db => db.Details.ToListAsync()).ReturnsAsync(details);
 
             // Act
-            var result = detailsRepository.GetAllAsync();
+            var result = await detailsRepository.GetAllAsync();
 
             // Assert
             Assert.IsNotNull(result);
@@ -57,14 +57,14 @@ namespace UAI672_WEB.Repositories.Tests
         }
 
         [TestMethod()]
-        public void GetByIdTest()
+        public async Task GetByIdTestAsync()
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
-            dbMock.Setup(db => db.Details.Find(1)).Returns(detail);
+            dbMock.Setup(db => db.Details.FindAsync(1)).ReturnsAsync(detail);
 
             // Act
-            var result = detailsRepository.GetByIdAsync(1);
+            var result = await detailsRepository.GetByIdAsync(1);
 
             // Assert
             Assert.IsNotNull(result);
@@ -72,7 +72,7 @@ namespace UAI672_WEB.Repositories.Tests
         }
 
         [TestMethod()]
-        public void AddTest()
+        public async Task AddTestAsync()
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
@@ -80,15 +80,15 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
 
             // Act
-            detailsRepository.AddAsync(detail);
+            await detailsRepository.AddAsync(detail);
 
             // Assert
             detailsSetMock.Verify(set => set.Add(detail), Times.Once);
-            dbMock.Verify(db => db.SaveChanges(), Times.Once);
+            dbMock.Verify(db => db.SaveChangesAsync(), Times.Once);
         }
 
         [TestMethod()]
-        public void UpdateTest()
+        public async Task UpdateTestAsync()
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
@@ -96,15 +96,15 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
 
             // Act
-            detailsRepository.UpdateAsync(detail);
+            await detailsRepository.UpdateAsync(detail);
 
             // Assert
             detailsSetMock.Verify(set => set.Attach(detail), Times.Once);
-            dbMock.Verify(db => db.SaveChanges(), Times.Once);
+            dbMock.Verify(db => db.SaveChangesAsync(), Times.Once);
         }
 
         [TestMethod()]
-        public void DeleteTest()
+        public async Task DeleteTestAsync()
         {
             // Arrange
             var detail = new Details { ID = 1, Name = "Detail1", Surname = "Surname1" };
@@ -113,11 +113,11 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Details).Returns(detailsSetMock.Object);
 
             // Act
-            detailsRepository.DeleteAsync(1);
+            await detailsRepository.DeleteAsync(1);
 
             // Assert
             detailsSetMock.Verify(set => set.Remove(detail), Times.Once);
-            dbMock.Verify(db => db.SaveChanges(), Times.Once);
+            dbMock.Verify(db => db.SaveChangesAsync(), Times.Once);
         }
     }
 }
