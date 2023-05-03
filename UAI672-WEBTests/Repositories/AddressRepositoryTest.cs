@@ -47,7 +47,7 @@ namespace UAI672_WEB.Repositories.Tests
             var result = addressRepository.GetAllAsync();
 
             // Assert
-            Assert.AreEqual(3, result.Count());
+            Assert.AreEqual(3, result.Result.Count());
         }
 
         [TestMethod]
@@ -61,9 +61,9 @@ namespace UAI672_WEB.Repositories.Tests
             var result = addressRepository.GetByIdAsync(1);
 
             // Assert
-            Assert.AreEqual(1, result.Id);
-            Assert.AreEqual(25, result.Number);
-            Assert.AreEqual("City1", result.City);
+            Assert.AreEqual(1, result.Result.Id);
+            Assert.AreEqual(25, result.Result.Number);
+            Assert.AreEqual("City1", result.Result.City);
         }
 
         [TestMethod]
@@ -87,7 +87,7 @@ namespace UAI672_WEB.Repositories.Tests
             var address = new Addresses { Id = 1, Number = 454, City = "City1" };
 
             // Act
-            addressRepository.UpdateAsync(address);
+            _ = addressRepository.UpdateAsync(address);
 
             // Assert
             dbMock.Verify(db => db.Addresses.Remove(address), Times.Never);
@@ -103,7 +103,7 @@ namespace UAI672_WEB.Repositories.Tests
             dbMock.Setup(db => db.Addresses.Find(1)).Returns(address);
 
             // Act
-            addressRepository.DeleteAsync(1);
+            _ = addressRepository.DeleteAsync(1);
 
             // Assert
             dbMock.Verify(db => db.Addresses.Remove(address), Times.Once);

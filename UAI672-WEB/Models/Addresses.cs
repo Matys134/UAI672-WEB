@@ -23,4 +23,5 @@ namespace UAI672_WEB.Models
         [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Details> Details { get; set; }
     }
+
 }

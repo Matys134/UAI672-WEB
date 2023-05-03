@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using System.Web.Mvc;
 using UAI672_WEB.Models;
 using UAI672_WEB.Services;
+using UAI672_WEB.Views.Addresses;
 
 namespace UAI672_WEB.Controllers
 {
@@ -34,11 +35,18 @@ namespace UAI672_WEB.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = await _addressService.GetByIdAsync(id.Value);
-            if (addresses == null)
+            Addresses address = await _addressService.GetByIdAsync(id.Value);
+            if (address == null)
                 return HttpNotFound();
 
-            return View(addresses);
+            var viewModel = new AddressesModelView()
+            {
+                Id = address.Id,
+                City = address.City,
+                Number = address.Number
+            };
+
+            return View(viewModel);
         }
 
         // GET: Addresses/Create
@@ -52,15 +60,22 @@ namespace UAI672_WEB.Controllers
         // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Addresses addresses)
+        public async Task<ActionResult> CreateAsync(AddressesModelView viewModel)
         {
             if (ModelState.IsValid)
             {
-                _addressService.AddAsync(addresses);
+                var address = new Addresses()
+                {
+                    City = viewModel.City,
+                    Number = viewModel.Number
+                };
+
+                await _addressService.AddAsync(address);
+
                 return RedirectToAction("Index");
             }
 
-            return View(addresses);
+            return View(viewModel);
         }
 
         // GET: Addresses/Edit/5
@@ -69,11 +84,18 @@ namespace UAI672_WEB.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = await _addressService.GetByIdAsync(id.Value);
-            if (addresses == null)
+            var address = await _addressService.GetByIdAsync(id.Value);
+            if (address == null)
                 return HttpNotFound();
 
-            return View(addresses);
+            var viewModel = new AddressesModelView()
+            {
+                Id = address.Id,
+                City = address.City,
+                Number = address.Number
+            };
+
+            return View(viewModel);
         }
 
         // POST: Addresses/Edit/5
@@ -81,15 +103,23 @@ namespace UAI672_WEB.Controllers
         // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(Addresses addresses)
+        public async Task<ActionResult> Edit(AddressesModelView viewModel)
         {
             if (ModelState.IsValid)
             {
-                _addressService.UpdateAsync(addresses);
+                var address = new Addresses()
+                {
+                    Id = viewModel.Id,
+                    City = viewModel.City,
+                    Number = viewModel.Number
+                };
+
+                await _addressService.UpdateAsync(address);
+
                 return RedirectToAction("Index");
             }
 
-            return View(addresses);
+            return View(viewModel);
         }
 
         // GET: Addresses/Delete/5
@@ -98,11 +128,18 @@ namespace UAI672_WEB.Controllers
             if (id == null)
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var addresses = await _addressService.GetByIdAsync(id.Value);
-            if (addresses == null)
+            var address = await _addressService.GetByIdAsync(id.Value);
+            if (address == null)
                 return HttpNotFound();
 
-            return View(addresses);
+            var viewModel = new AddressesModelView()
+            {
+                Id = address.Id,
+                City = address.City,
+                Number = address.Number
+            };
+
+            return View(viewModel);
         }
 
         // POST: Addresses/Delete/5

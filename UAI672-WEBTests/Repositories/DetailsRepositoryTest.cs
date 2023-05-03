@@ -52,8 +52,8 @@ namespace UAI672_WEB.Repositories.Tests
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(details.Count, result.Count());
-            CollectionAssert.AreEqual(details, result.ToList());
+            Assert.AreEqual(details.Count, result.Result.Count());
+            CollectionAssert.AreEqual(details, result.Result.ToList());
         }
 
         [TestMethod()]

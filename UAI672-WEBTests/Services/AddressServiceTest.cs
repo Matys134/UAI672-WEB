@@ -43,16 +43,16 @@ namespace UAI672_WEB.Services.Tests
         {
             // Arrange
             var address = new Addresses { Id = 1, Number = 20, City = "City1" };
-            _addressRepositoryMock.Setup(repo => repo.GetByIdAsync(1)).Returns(address);
+            Moq.Language.Flow.IReturnsResult<IRepository<Addresses>> returnsResult = _addressRepositoryMock.Setup(repo => repo.GetByIdAsync(1)).Returns(address);
 
             // Act
-            var result = _addressService.GetById(1);
+            var result = _addressService.GetByIdAsync(1);
 
             // Assert
             Assert.IsNotNull(result);
-            Assert.AreEqual(address.Id, result.Id);
-            Assert.AreEqual(address.Number, result.Number);
-            Assert.AreEqual(address.City, result.City);
+            Assert.AreEqual(address.Id, result.Result.Id);
+            Assert.AreEqual(address.Number, result.Result.Number);
+            Assert.AreEqual(address.City, result.Result.City);
         }
 
         [TestMethod()]
@@ -62,7 +62,7 @@ namespace UAI672_WEB.Services.Tests
             var address = new Addresses { Id = 1, Number = 20, City = "City1" };
 
             // Act
-            _addressService.Add(address);
+            _addressService.AddAsync(address);
 
             // Assert
             _addressRepositoryMock.Verify(repo => repo.AddAsync(address), Times.Once());
@@ -75,7 +75,7 @@ namespace UAI672_WEB.Services.Tests
             var address = new Addresses { Id = 1, Number = 20, City = "City1" };
 
             // Act
-            _addressService.Update(address);
+            _addressService.UpdateAsync(address);
 
             // Assert
             _addressRepositoryMock.Verify(repo => repo.UpdateAsync(address), Times.Once());
@@ -88,7 +88,7 @@ namespace UAI672_WEB.Services.Tests
             int id = 1;
 
             // Act
-            _addressService.Delete(id);
+            _addressService.DeleteAsync(id);
 
             // Assert
             _addressRepositoryMock.Verify(repo => repo.DeleteAsync(id), Times.Once());

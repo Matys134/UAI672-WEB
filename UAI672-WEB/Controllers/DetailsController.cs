@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using UAI672_WEB.Models;
 using UAI672_WEB.Repositories;
 using UAI672_WEB.Services;
+using UAI672_WEB.Views.DetailsV;
 
 namespace UAI672_WEB.Controllers
 {
@@ -31,10 +32,12 @@ namespace UAI672_WEB.Controllers
         {
             if (id == null) return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
 
-            var details = await _detailService.GetByIdAsync(id.Value);
-            if (details == null) return HttpNotFound();
+            var detail = await _detailService.GetByIdAsync(id.Value);
+            if (detail == null) return HttpNotFound();
 
-            return View(details);
+            var detailModel = new DetailsModelView(detail);
+
+            return View(detailModel);
         }
 
         // GET: Details/Create
@@ -47,16 +50,22 @@ namespace UAI672_WEB.Controllers
         // POST: Details/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ID,Name,Surname,Address")] Details details)
+        public async Task<ActionResult> Create([Bind(Include = "ID,Name,Surname,Address")] DetailsModelView detailModel)
         {
             if (ModelState.IsValid)
             {
-                await _detailService.AddAsync(details);
+                var detail = new Details
+                {
+                    Name = detailModel.Name,
+                    Surname = detailModel.Surname,
+                    Address = detailModel.AddressId
+                };
+                await _detailService.AddAsync(detail);
                 return RedirectToAction("Index");
             }
 
-            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", details.Address);
-            return View(details);
+            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", detailModel.AddressId);
+            return View(detailModel);
         }
 
         // GET: Details/Edit/5
