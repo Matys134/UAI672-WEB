@@ -4,7 +4,7 @@ using System.Linq;
 using System.Web;
 using UAI672_WEB.Models;
 
-namespace UAI672_WEB.Views.DetailsV
+namespace UAI672_WEB.Views.DetailsView
 {
     using System.ComponentModel.DataAnnotations;
 

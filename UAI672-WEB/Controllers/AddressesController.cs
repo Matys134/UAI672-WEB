@@ -39,19 +39,23 @@ namespace UAI672_WEB.Controllers
             if (address == null)
                 return HttpNotFound();
 
-            var viewModel = new AddressesModelView()
-            {
-                Id = address.Id,
-                City = address.City,
-                Number = address.Number
-            };
-
-            return View(viewModel);
+            return View(address);
         }
 
         // GET: Addresses/Create
-        public ActionResult Create()
+        public ActionResult Create([Bind(Include = "City, Number")] AddressesModelView viewModel)
         {
+            if (ModelState.IsValid)
+            {
+                var address = new Addresses()
+                {
+                    City = viewModel.City,
+                    Number = viewModel.Number
+                };
+
+                _addressService.AddAsync(address);
+                return RedirectToAction("Index");
+            }
             return View();
         }
 
@@ -95,7 +99,7 @@ namespace UAI672_WEB.Controllers
                 Number = address.Number
             };
 
-            return View(viewModel);
+            return View(address);
         }
 
         // POST: Addresses/Edit/5
@@ -132,14 +136,7 @@ namespace UAI672_WEB.Controllers
             if (address == null)
                 return HttpNotFound();
 
-            var viewModel = new AddressesModelView()
-            {
-                Id = address.Id,
-                City = address.City,
-                Number = address.Number
-            };
-
-            return View(viewModel);
+            return View(address);
         }
 
         // POST: Addresses/Delete/5

@@ -4,7 +4,7 @@ using System.Web.Mvc;
 using UAI672_WEB.Models;
 using UAI672_WEB.Repositories;
 using UAI672_WEB.Services;
-using UAI672_WEB.Views.DetailsV;
+using UAI672_WEB.Views.DetailsView;
 
 namespace UAI672_WEB.Controllers
 {
@@ -35,9 +35,7 @@ namespace UAI672_WEB.Controllers
             var detail = await _detailService.GetByIdAsync(id.Value);
             if (detail == null) return HttpNotFound();
 
-            var detailModel = new DetailsModelView(detail);
-
-            return View(detailModel);
+            return View(detail);
         }
 
         // GET: Details/Create
@@ -50,7 +48,7 @@ namespace UAI672_WEB.Controllers
         // POST: Details/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ID,Name,Surname,Address")] DetailsModelView detailModel)
+        public async Task<ActionResult> Create([Bind(Include = "ID,Name,Surname,AddressId")] Details detailModel)
         {
             if (ModelState.IsValid)
             {
@@ -58,13 +56,13 @@ namespace UAI672_WEB.Controllers
                 {
                     Name = detailModel.Name,
                     Surname = detailModel.Surname,
-                    Address = detailModel.AddressId
+                    Address = detailModel.Address
                 };
                 await _detailService.AddAsync(detail);
                 return RedirectToAction("Index");
-            }
+            }//todo ajax
 
-            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", detailModel.AddressId);
+            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", detailModel.Address);
             return View(detailModel);
         }
 
