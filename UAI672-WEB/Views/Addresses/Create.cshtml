@@ -6,6 +6,7 @@
 
 <h2>Create</h2>
 
+<div id="result"></div>
 
 @using (Html.BeginForm())
 {
@@ -33,16 +34,30 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default"/>
+                <input type="button" value="Create" class="btn btn-default" onclick="createAddress()" />
             </div>
         </div>
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
-</div>
+<script>
+    function createAddress() {
+        var data = $('form').serialize();
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+        $.ajax({
+            type: 'POST',
+            url: '@Url.Action("CreateAsync", "Addresses")',
+            data: data,
+            success: function(result) {
+                if (result.success) {
+                    $('#result').text('Address created successfully.');
+                } else {
+                    $('#result').text('An error occurred while creating the address.');
+                }
+            },
+            error: function() {
+                $('#result').text('An error occurred while creating the address.');
+            }
+        });
+    }
+</script>

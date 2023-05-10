@@ -64,7 +64,7 @@ namespace UAI672_WEB.Controllers
         // chcete vytvořit vazbu. Další informace viz https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> CreateAsync(AddressesModelView viewModel)
+        public async Task<JsonResult> CreateAsync(AddressesModelView viewModel)
         {
             if (ModelState.IsValid)
             {
@@ -76,11 +76,12 @@ namespace UAI672_WEB.Controllers
 
                 await _addressService.AddAsync(address);
 
-                return RedirectToAction("Index");
+                return Json(new { success = true });
             }
 
-            return View(viewModel);
+            return Json(new { success = false });
         }
+
 
         // GET: Addresses/Edit/5
         public async Task<ActionResult> Edit(int? id)

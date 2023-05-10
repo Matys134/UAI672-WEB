@@ -48,7 +48,7 @@ namespace UAI672_WEB.Controllers
         // POST: Details/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Create([Bind(Include = "ID,Name,Surname,AddressId")] Details detailModel)
+        public async Task<ActionResult> CreateAsync(Details detailModel)
         {
             if (ModelState.IsValid)
             {
@@ -59,11 +59,10 @@ namespace UAI672_WEB.Controllers
                     Address = detailModel.Address
                 };
                 await _detailService.AddAsync(detail);
-                return RedirectToAction("Index");
-            }//todo ajax
+                return Json(detail);
+            }
 
-            ViewBag.Address = new SelectList(await _addressService.GetAllAsync(), "id", "City", detailModel.Address);
-            return View(detailModel);
+            return Json(new { error = "Invalid model state" });
         }
 
         // GET: Details/Edit/5
