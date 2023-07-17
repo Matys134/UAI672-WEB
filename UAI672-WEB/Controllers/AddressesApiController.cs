@@ -15,17 +15,6 @@ using UAI672_WEB.Models;
 
 namespace UAI672_WEB.Controllers
 {
-    /*
-    The WebApiConfig class may require additional changes to add a route for this controller. Merge these statements into the Register method of the WebApiConfig class as applicable. Note that OData URLs are case sensitive.
-
-    using System.Web.Http.OData.Builder;
-    using System.Web.Http.OData.Extensions;
-    using UAI672_WEB.Models;
-    ODataConventionModelBuilder builder = new ODataConventionModelBuilder();
-    builder.EntitySet<Addresses>("AddressesApi");
-    builder.EntitySet<Details>("Details"); 
-    config.Routes.MapODataServiceRoute("odata", "odata", builder.GetEdmModel());
-    */
     public class AddressesApiController : ODataController
     {
         private Model1 db = new Model1();

@@ -164,7 +164,6 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Clients\AddressApiClient.cs" />
     <Compile Include="Controllers\AddressesApiController.cs" />
     <Compile Include="Controllers\AddressesController.cs" />
     <Compile Include="Controllers\DetailsApiController.cs" />
